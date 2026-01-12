@@ -12,9 +12,6 @@ Terminal::Terminal(float width, float height)
   currentColor = defaultColor;
 }
 
-// Deprecated write method, replacing internal logic
-void Terminal::write(std::string text) { appendText(text); }
-
 // Helper to get number of visible rows
 int Terminal::getRows() { return (int)(screenHeight / lineHeight); }
 
@@ -455,10 +452,18 @@ void Terminal::render(Renderer &renderer, FontManager &fontManager,
         cursorDrawX = x;
       }
 
-      std::string s(1, glyph.character);
-      renderer.drawText(fontManager, s, x, y, scale, glyph.color);
-
+      // Render single codepoint
       Character ch = fontManager.getCharacter(glyph.character);
+
+      GLfloat xpos = x + ch.Bearing.x * scale;
+      GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+      GLfloat w = ch.Size.x * scale;
+      GLfloat h = ch.Size.y * scale;
+
+      // Draw Glyph
+      renderer.drawCodepoint(fontManager, glyph.character, x, y, scale,
+                             glyph.color);
+
       x += (ch.Advance >> 6) * scale;
     }
 

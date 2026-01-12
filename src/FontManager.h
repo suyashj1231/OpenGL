@@ -15,10 +15,10 @@ public:
   ~FontManager();
 
   bool loadFont(std::string fontPath, unsigned int fontSize);
-  Character getCharacter(char c);
+  Character getCharacter(unsigned int c);
 
 private:
   FT_Library ft;
   FT_Face face;
-  std::map<char, Character> Characters;
+  std::map<unsigned int, Character> Characters;
 };

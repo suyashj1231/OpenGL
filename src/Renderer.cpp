@@ -57,49 +57,70 @@ void Renderer::drawRect(float x, float y, float w, float h, glm::vec3 color) {
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Renderer::drawText(FontManager &fontManager, std::string text, float x,
-                        float y, float scale, glm::vec3 color) {
-  // Activate corresponding render state
+void Renderer::drawCodepoint(FontManager &fontManager, unsigned int codepoint,
+                             float x, float y, float scale, glm::vec3 color) {
   shader.use();
-  shader.setInt("text", 0); // Explicitly set texture unit 0
+  shader.setInt("text", 0);
   shader.setVec3("textColor", color.x, color.y, color.z);
   glActiveTexture(GL_TEXTURE0);
   glBindVertexArray(VAO);
 
-  // Iterate through all characters
-  std::string::const_iterator c;
-  for (c = text.begin(); c != text.end(); c++) {
-    Character ch = fontManager.getCharacter(*c);
+  Character ch = fontManager.getCharacter(codepoint);
+  float xpos = x + ch.Bearing.x * scale;
+  float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+  float w = ch.Size.x * scale;
+  float h = ch.Size.y * scale;
 
+  if (w > 0 && h > 0) {
+    float vertices[6][4] = {
+        {xpos, ypos + h, 0.0f, 0.0f}, {xpos, ypos, 0.0f, 1.0f},
+        {xpos + w, ypos, 1.0f, 1.0f}, {xpos, ypos + h, 0.0f, 0.0f},
+        {xpos + w, ypos, 1.0f, 1.0f}, {xpos + w, ypos + h, 1.0f, 0.0f}};
+    glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+  }
+  glBindVertexArray(0);
+  glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Renderer::drawText(FontManager &fontManager, std::string text, float x,
+                        float y, float scale, glm::vec3 color) {
+  // Simple wrapper now, or could optimize to avoid rebinding VAO every char
+  // For now, let's keep the optimized loop here to avoid state thrashing if we
+  // care, but for simplicity and consistency, let's just loop. Actually,
+  // rebinding VAO/Shader for every char is slow. But drawCodepoint binds them.
+  // Let's copy-paste logic for now or accept the perf hit?
+  // Terminal uses drawCodepoint in its own loop.
+  // drawText is used mainly for FPS counter etc.
+
+  // Re-implementing drawText to be safe/simple for ASCII legacy
+  shader.use();
+  shader.setInt("text", 0);
+  shader.setVec3("textColor", color.x, color.y, color.z);
+  glActiveTexture(GL_TEXTURE0);
+  glBindVertexArray(VAO);
+
+  for (char c : text) {
+    Character ch = fontManager.getCharacter(c);
     float xpos = x + ch.Bearing.x * scale;
     float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
-
     float w = ch.Size.x * scale;
     float h = ch.Size.y * scale;
-
-    // Skip empty glyphs (like space)
     if (w > 0 && h > 0) {
-      // Update VBO for each character
       float vertices[6][4] = {
-          {xpos, ypos + h, 0.0f, 0.0f},    {xpos, ypos, 0.0f, 1.0f},
-          {xpos + w, ypos, 1.0f, 1.0f},
-
-          {xpos, ypos + h, 0.0f, 0.0f},    {xpos + w, ypos, 1.0f, 1.0f},
-          {xpos + w, ypos + h, 1.0f, 0.0f}};
-      // Render glyph texture over quad
+          {xpos, ypos + h, 0.0f, 0.0f}, {xpos, ypos, 0.0f, 1.0f},
+          {xpos + w, ypos, 1.0f, 1.0f}, {xpos, ypos + h, 0.0f, 0.0f},
+          {xpos + w, ypos, 1.0f, 1.0f}, {xpos + w, ypos + h, 1.0f, 0.0f}};
       glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-      // Update content of VBO memory
       glBindBuffer(GL_ARRAY_BUFFER, VBO);
       glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
       glBindBuffer(GL_ARRAY_BUFFER, 0);
-      // Render quad
       glDrawArrays(GL_TRIANGLES, 0, 6);
     }
-
-    // Now advance cursors for next glyph (note that advance is number of 1/64
-    // pixels)
-    x += (ch.Advance >> 6) *
-         scale; // Bitshift by 6 to get value in pixels (2^6 = 64)
+    x += (ch.Advance >> 6) * scale;
   }
   glBindVertexArray(0);
   glBindTexture(GL_TEXTURE_2D, 0);

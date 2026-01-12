@@ -19,7 +19,6 @@ public:
 
   // Rendering
   void render(Renderer &renderer, FontManager &fontManager, float deltaTime);
-  void write(std::string text); // Deprecated utility
 
   // Resize handling
   void setSize(float width, float height);
@@ -75,7 +74,7 @@ private:
 
   // Color State
   struct TerminalGlyph {
-    char character;
+    unsigned int character; // UTF-32
     glm::vec3 color;
   };
   glm::vec3 currentColor{1.0f, 1.0f, 1.0f}; // Current drawing color
@@ -94,6 +93,10 @@ private:
 
   // Internal helper
   void appendText(std::string text);
+
+  // UTF-8 Decoder State
+  uint32_t utf8State = 0;
+  uint32_t utf8Codepoint = 0;
 
   // ANSI Parser State
   enum class ParserState {
