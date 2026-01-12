@@ -190,9 +190,8 @@ void Renderer::drawCodepoint(FontManager &fontManager, unsigned int codepoint,
 void Renderer::drawText(FontManager &fontManager, std::string text, float x,
                         float y, float scale, glm::vec3 color) {
   for (char c : text) {
-    if (fontManager.Characters.find(c) == fontManager.Characters.end()) {
-      fontManager.getCharacter(c); // Ensure loaded
-    }
+    // Implicit load
+
     // drawCodepoint handles batching now
     drawCodepoint(fontManager, c, x, y, scale, color);
 
