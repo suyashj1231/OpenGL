@@ -202,6 +202,14 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   if (globalTerminal) {
     globalTerminal->setSize(width, height);
   }
+  if (globalPTY) {
+    // Estimate based on Monaco 18 (approx 11px wide, 20px high line with
+    // padding) width / 11 is a decent approximation for cols height / 20 is
+    // lines
+    int cols = width / 11;
+    int rows = height / 20;
+    globalPTY->setWindowSize(rows, cols);
+  }
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
