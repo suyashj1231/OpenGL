@@ -11,4 +11,8 @@ find_package(glfw3 3.3 REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(glm REQUIRED)
 
+# Copy shaders to build directory
+configure_file(src/text.vs ${CMAKE_BINARY_DIR}/src/text.vs COPYONLY)
+configure_file(src/text.fs ${CMAKE_BINARY_DIR}/src/text.fs COPYONLY)
+
 target_link_libraries(OpenGL glfw OpenGL::GL Freetype::Freetype glm::glm)

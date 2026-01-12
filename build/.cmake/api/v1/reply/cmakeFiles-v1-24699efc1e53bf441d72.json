@@ -308,6 +308,12 @@
 		{
 			"isExternal" : true,
 			"path" : "/opt/homebrew/share/glm/glmConfig-release.cmake"
+		},
+		{
+			"path" : "src/text.vs"
+		},
+		{
+			"path" : "src/text.fs"
 		}
 	],
 	"kind" : "cmakeFiles",

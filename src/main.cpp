@@ -46,7 +46,34 @@ int main() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   // Initialize Systems
-  Shader shader("src/text.vs", "src/text.fs");
+  const char *vertexSource =
+      "#version 330 core\n"
+      "layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>\n"
+      "out vec2 TexCoords;\n"
+      "\n"
+      "uniform mat4 projection;\n"
+      "\n"
+      "void main()\n"
+      "{\n"
+      "    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);\n"
+      "    TexCoords = vertex.zw;\n"
+      "}\0";
+
+  const char *fragmentSource =
+      "#version 330 core\n"
+      "in vec2 TexCoords;\n"
+      "out vec4 color;\n"
+      "\n"
+      "uniform sampler2D text;\n"
+      "uniform vec3 textColor;\n"
+      "\n"
+      "void main()\n"
+      "{    \n"
+      "    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);\n"
+      "    color = vec4(textColor, 1.0) * sampled;\n"
+      "}\0";
+
+  Shader shader(vertexSource, fragmentSource, true);
   glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
   shader.use();
   shader.setMat4("projection", &projection[0][0]);
@@ -112,6 +139,7 @@ void char_callback(GLFWwindow *window, unsigned int codepoint) {
   if (globalPTY) {
     // Simple unicode to char conversion (ascii only for now)
     char c = (char)codepoint;
+    std::cout << "Key typed: " << c << " (" << codepoint << ")" << std::endl;
     globalPTY->writeInput(&c, 1);
   }
 }

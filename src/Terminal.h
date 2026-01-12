@@ -33,4 +33,15 @@ private:
 
   // Internal helper
   void appendText(std::string text);
+
+  // ANSI Parser State
+  enum class ParserState {
+    Normal,
+    Esc,
+    Csi // Control Sequence Introducer like \x1b[
+  };
+  ParserState parserState = ParserState::Normal;
+  std::string csiParams;
+
+  void handleCsi(char finalByte);
 };

@@ -25,6 +25,7 @@ void Renderer::drawText(FontManager &fontManager, std::string text, float x,
                         float y, float scale, glm::vec3 color) {
   // Activate corresponding render state
   shader.use();
+  shader.setInt("text", 0); // Explicitly set texture unit 0
   shader.setVec3("textColor", color.x, color.y, color.z);
   glActiveTexture(GL_TEXTURE0);
   glBindVertexArray(VAO);
@@ -40,21 +41,25 @@ void Renderer::drawText(FontManager &fontManager, std::string text, float x,
     float w = ch.Size.x * scale;
     float h = ch.Size.y * scale;
 
-    // Update VBO for each character
-    float vertices[6][4] = {
-        {xpos, ypos + h, 0.0f, 0.0f},    {xpos, ypos, 0.0f, 1.0f},
-        {xpos + w, ypos, 1.0f, 1.0f},
+    // Skip empty glyphs (like space)
+    if (w > 0 && h > 0) {
+      // Update VBO for each character
+      float vertices[6][4] = {
+          {xpos, ypos + h, 0.0f, 0.0f},    {xpos, ypos, 0.0f, 1.0f},
+          {xpos + w, ypos, 1.0f, 1.0f},
 
-        {xpos, ypos + h, 0.0f, 0.0f},    {xpos + w, ypos, 1.0f, 1.0f},
-        {xpos + w, ypos + h, 1.0f, 0.0f}};
-    // Render glyph texture over quad
-    glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-    // Update content of VBO memory
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // Render quad
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+          {xpos, ypos + h, 0.0f, 0.0f},    {xpos + w, ypos, 1.0f, 1.0f},
+          {xpos + w, ypos + h, 1.0f, 0.0f}};
+      // Render glyph texture over quad
+      glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+      // Update content of VBO memory
+      glBindBuffer(GL_ARRAY_BUFFER, VBO);
+      glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+      glBindBuffer(GL_ARRAY_BUFFER, 0);
+      // Render quad
+      glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+
     // Now advance cursors for next glyph (note that advance is number of 1/64
     // pixels)
     x += (ch.Advance >> 6) *

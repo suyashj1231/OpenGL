@@ -13,27 +13,73 @@ Terminal::Terminal(float width, float height)
 void Terminal::write(std::string text) { appendText(text); }
 
 void Terminal::processOutput(std::string output) {
+  if (!output.empty()) {
+    std::cout << "Terminal received " << output.length() << " bytes from PTY"
+              << std::endl;
+  }
   for (char c : output) {
-    if (c == '\n') {
+    if (parserState == ParserState::Normal) {
+      if (c == 27) { // ESC
+        parserState = ParserState::Esc;
+      } else if (c == '\n') {
+        lines.push_back("");
+      } else if (c == '\r') {
+        // carriage return
+      } else if (c == '\b') {
+        if (!lines.empty() && !lines.back().empty()) {
+          lines.back().pop_back();
+        }
+      } else if (c == 7) {
+        // bell
+      } else {
+        if (c >= 32 || c == 9) {
+          if (lines.empty())
+            lines.push_back("");
+          lines.back() += c;
+        }
+      }
+    } else if (parserState == ParserState::Esc) {
+      if (c == '[') {
+        parserState = ParserState::Csi;
+        csiParams = "";
+      } else {
+        // Unsupported sequence, reset
+        parserState = ParserState::Normal;
+      }
+    } else if (parserState == ParserState::Csi) {
+      if (c >= '0' && c <= '9') {
+        csiParams += c;
+      } else if (c == ';') {
+        csiParams += c;
+      } else if (c >= 0x40 && c <= 0x7E) {
+        // Final byte
+        handleCsi(c);
+        parserState = ParserState::Normal;
+      } else {
+        // Unexpected char in CSI?
+        // Usually we just ignore intermediate bytes for now
+      }
+    }
+  }
+}
+
+void Terminal::handleCsi(char finalByte) {
+  // For now, we strip mostly.
+  // 'm' is SGR (Select Graphic Rendition) -> Colors
+  // 'K' is Erase in Line
+  // 'J' is Erase in Display
+
+  if (finalByte == 'm') {
+    // Color handling would go here
+    // csiParams contains "1;31" etc.
+    // For now, doing nothing effectively strips it.
+  } else if (finalByte == 'K') {
+    // Erase line logic (clear from cursor to end)
+  } else if (finalByte == 'J') {
+    // Clear screen
+    if (csiParams == "2") {
+      lines.clear();
       lines.push_back("");
-    } else if (c == '\r') {
-      // Carriage return: usually move cursor to start of line.
-      // For simple rendering, we might ignore or reset logic.
-      // For now, ignore it to avoid double newlines if \r\n
-    } else if (c == '\b') {
-      if (!lines.empty() && !lines.back().empty()) {
-        lines.back().pop_back();
-      }
-    } else if (c == 7) { // Bell
-                         // ding
-    } else {
-      // Filter non-printable checks if needed, but lets try blindly adding
-      // Simple ANSI stripper could go here
-      if (c >= 32 || c == 9) { // 32 is space, 9 is tab
-        if (lines.empty())
-          lines.push_back("");
-        lines.back() += c;
-      }
     }
   }
 }
