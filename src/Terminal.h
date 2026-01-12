@@ -1,6 +1,8 @@
 #pragma once
 
-#include "config.h"
+#include <glm/glm.hpp>
+#include <string>
+#include <vector>
 
 // Forward declarations
 class Renderer;
@@ -21,6 +23,7 @@ public:
 
   // Resize handling
   void setSize(float width, float height);
+  int getRows();
 
   // Scrolling
   void scroll(int amount);
@@ -84,6 +87,7 @@ private:
 
   // Cursor State
   int cursorX = 0;
+  int cursorY = 0;
   float cursorTimer = 0.0f;
   bool showCursor = true;
   glm::vec3 cursorColor{0.0f, 1.0f, 1.0f}; // Default Cyan Cursor

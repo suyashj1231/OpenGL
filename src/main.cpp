@@ -40,8 +40,14 @@ int main() {
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
   glfwSetKeyCallback(window, key_callback);
   glfwSetCharCallback(window, char_callback);
-  glfwSetCharCallback(window, char_callback);
   glfwSetScrollCallback(window, scroll_callback);
+
+  // Register Mouse Callbacks
+  void mouse_button_callback(GLFWwindow * window, int button, int action,
+                             int mods);
+  void cursor_position_callback(GLFWwindow * window, double xpos, double ypos);
+  glfwSetMouseButtonCallback(window, mouse_button_callback);
+  glfwSetCursorPosCallback(window, cursor_position_callback);
 
   // Default VSync ON
   glfwSwapInterval(1);
@@ -307,6 +313,7 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 }
 
 // Mouse Interactions
+// Mouse Interactions
 bool isDragging = false;
 void mouse_button_callback(GLFWwindow *window, int button, int action,
                            int mods) {
@@ -315,18 +322,27 @@ void mouse_button_callback(GLFWwindow *window, int button, int action,
       isDragging = true;
       double x, y;
       glfwGetCursorPos(window, &x, &y);
-      // Flip Y for terminal? No, terminal logic expects GlFW/Screen Y but does
-      // its own inversion Actually Terminal::screenToGrid expects OpenGL Y (0
-      // at bottom)? "Y is from bottom in OpenGL... y=screenHeight corresponds
-      // to top" glfwGetCursorPos returns 0 at TOP. So we need to convert glfw Y
-      // to OpenGL Y: height - glfwY
 
-      int w, h;
-      glfwGetFramebufferSize(window, &w, &h);
-      float glY = (float)h - (float)y;
+      // Calculate Content Scale (DPI support)
+      int fw, fh;
+      glfwGetFramebufferSize(window, &fw, &fh);
+
+      int ww, wh;
+      glfwGetWindowSize(window, &ww, &wh);
+
+      float xScale = (float)fw / (float)ww;
+      float yScale = (float)fh / (float)wh;
+
+      // Apply scale
+      float processedX = (float)x * xScale;
+      float processedY = (float)y * yScale;
+
+      // Flip Y for terminal
+      // Terminal expects OpenGL Y (0 at bottom) relative to framebuffer height
+      float glY = (float)fh - processedY;
 
       if (globalTerminal) {
-        globalTerminal->startSelection((float)x, glY);
+        globalTerminal->startSelection(processedX, glY);
       }
     } else if (action == GLFW_RELEASE) {
       isDragging = false;
@@ -336,10 +352,21 @@ void mouse_button_callback(GLFWwindow *window, int button, int action,
 
 void cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
   if (isDragging && globalTerminal) {
-    int w, h;
-    glfwGetFramebufferSize(window, &w, &h);
-    float glY = (float)h - (float)ypos;
-    globalTerminal->updateSelection((float)xpos, glY);
+    int fw, fh;
+    glfwGetFramebufferSize(window, &fw, &fh);
+
+    int ww, wh;
+    glfwGetWindowSize(window, &ww, &wh);
+
+    float xScale = (float)fw / (float)ww;
+    float yScale = (float)fh / (float)wh;
+
+    float processedX = (float)xpos * xScale;
+    float processedY = (float)ypos * yScale;
+
+    float glY = (float)fh - processedY; // Invert based on framebuffer height
+
+    globalTerminal->updateSelection(processedX, glY);
   }
 }
 

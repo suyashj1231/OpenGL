@@ -15,48 +15,53 @@ Terminal::Terminal(float width, float height)
 // Deprecated write method, replacing internal logic
 void Terminal::write(std::string text) { appendText(text); }
 
+// Helper to get number of visible rows
+int Terminal::getRows() { return (int)(screenHeight / lineHeight); }
+
 void Terminal::processOutput(std::string output) {
   for (char c : output) {
     if (parserState == ParserState::Normal) {
       if (c == 27) { // ESC
         parserState = ParserState::Esc;
       } else if (c == '\n') {
-        lines.push_back(std::vector<TerminalGlyph>());
+        cursorY++;
         cursorX = 0;
-        // Reset color to default on newline (assumes end of input/output line)
-        currentColor = defaultColor;
-        // Reset scroll when typing/outputting
-        scrollToBottom();
+        // If we moved past the end, add a new line
+        if (cursorY >= lines.size()) {
+          lines.push_back(std::vector<TerminalGlyph>());
+          // Maintain scroll at bottom if we are outputting
+          scrollToBottom();
+        }
+        // Reset color? Usually color persists until changed.
+        // currentColor = defaultColor; // Terminals usually persist color
+        // across newlines
       } else if (c == '\r') {
-        // Carriage Return: Return to start of line
         cursorX = 0;
       } else if (c == '\b') {
-        // Backspace: move back one
-        if (cursorX > 0) {
+        if (cursorX > 0)
           cursorX--;
-        }
       } else if (c == 7) {
         // bell
       } else {
         if (c >= 32 || c == 9) { // Printable or Tab
-          if (lines.empty()) {
+          // Ensure line exists
+          while (lines.size() <= cursorY) {
             lines.push_back(std::vector<TerminalGlyph>());
-            cursorX = 0;
           }
 
-          // Ensure space exists up to cursorX
-          if (lines.back().size() <= cursorX) {
-            while (lines.back().size() <= cursorX) {
+          // Ensure space exists up to cursorX in current line
+          if (lines[cursorY].size() <= cursorX) {
+            while (lines[cursorY].size() <= cursorX) {
               TerminalGlyph g;
               g.character = ' ';
               g.color = currentColor;
-              lines.back().push_back(g);
+              lines[cursorY].push_back(g);
             }
           }
 
           // Overwrite at cursorX
-          lines.back()[cursorX].character = c;
-          lines.back()[cursorX].color = currentColor;
+          lines[cursorY][cursorX].character = c;
+          lines[cursorY][cursorX].color = currentColor;
           cursorX++;
         }
       }
@@ -65,7 +70,6 @@ void Terminal::processOutput(std::string output) {
         parserState = ParserState::Csi;
         csiParams = "";
       } else {
-        // Unsupported sequence, reset
         parserState = ParserState::Normal;
       }
     } else if (parserState == ParserState::Csi) {
@@ -74,51 +78,94 @@ void Terminal::processOutput(std::string output) {
       } else if (c == ';') {
         csiParams += c;
       } else if (c >= 0x40 && c <= 0x7E) {
-        // Final byte
         handleCsi(c);
         parserState = ParserState::Normal;
-      } else {
-        // Unexpected char in CSI?
       }
     }
   }
 }
 
 void Terminal::handleCsi(char finalByte) {
-  if (finalByte == 'm') {
-    // SGR - Select Graphic Rendition
-    // std::cout << "[CSI] SGR: " << csiParams << std::endl;
-    if (csiParams.empty() || csiParams == "0") {
-      currentColor = defaultColor; // Reset to Default
-    } else {
-      std::stringstream ss(csiParams);
-      std::string segment;
+  // Parse params
+  std::vector<int> args;
+  std::stringstream ss(csiParams);
+  std::string segment;
+  while (std::getline(ss, segment, ';')) {
+    if (!segment.empty())
+      args.push_back(std::stoi(segment));
+    else
+      args.push_back(0); // Default encoding?
+  }
 
-      // Split by ';'
-      // We will do a manual parse loop to handle multiple codes
+  int arg1 = args.size() > 0 ? args[0] : 1; // Default 1
+  if (arg1 == 0)
+    arg1 = 1; // CSI 0 A means 1 A usually
+
+  if (finalByte == 'A') { // Up
+    cursorY -= arg1;
+    if (cursorY < 0)
+      cursorY = 0;
+  } else if (finalByte == 'B') { // Down
+    cursorY += arg1;
+    // Don't go past end? Or add lines?
+    // Standard: Cursor Down stops at bottom margin.
+    // For now, clamp to lines.size()
+    if (cursorY >= lines.size())
+      cursorY = lines.size() - 1;
+    if (lines.empty())
+      cursorY = 0;
+  } else if (finalByte == 'C') { // Right
+    cursorX += arg1;
+  } else if (finalByte == 'D') { // Left
+    cursorX -= arg1;
+    if (cursorX < 0)
+      cursorX = 0;
+  } else if (finalByte == 'H' || finalByte == 'f') { // Cup - Cursor Position
+    // args[0] is row (1-based), args[1] is col (1-based)
+    int r = (args.size() > 0 && args[0] > 0) ? args[0] : 1;
+    int c = (args.size() > 1 && args[1] > 0) ? args[1] : 1;
+
+    // Map visual row to absolute row
+    // Visual Row 1 = Top of screen
+    // Top of screen = lines.size() - getRows() ?
+    // Wait, if we are scrolling...
+    // Let's assume the screen "follows" the bottom.
+    int termRows = getRows();
+    int topRowIndex = (int)lines.size() - termRows;
+    if (topRowIndex < 0)
+      topRowIndex = 0;
+
+    // Actually, if we clear screen, lines.size() might be 1.
+    // If we use 'H', we expect to jump to top.
+    // If we assume the viewport is always locked to "end of buffer",
+    // then "Top" is relative to that.
+
+    cursorY = topRowIndex + (r - 1);
+    cursorX = c - 1;
+
+    // Ensure we don't jump way past end?
+    // If program asks to go to row 50 and we have 1 line, we should extend?
+    // Usually terminals have fixed size buffer. We grow dynamically.
+    while (lines.size() <= cursorY) {
+      lines.push_back(std::vector<TerminalGlyph>());
+    }
+  } else if (finalByte == 'm') {
+    // SGR - Select Graphic Rendition
+    if (csiParams.empty() || csiParams == "0") {
+      currentColor = defaultColor;
+    } else {
+      // Manual loop as before
+      std::stringstream ss2(csiParams);
       int currentVal = 0;
       bool hasVal = false;
-
       auto applyCode = [&](int code) {
         if (code == 0) {
-          currentColor = defaultColor; // Reset to Default
+          currentColor = defaultColor;
         } else if (code >= 30 && code <= 37) {
-          if (code == 30)
-            currentColor = glm::vec3(0.0f, 0.0f, 0.0f); // Black
-          else if (code == 31)
-            currentColor = glm::vec3(1.0f, 0.0f, 0.0f); // Red
-          else if (code == 32)
-            currentColor = glm::vec3(0.0f, 1.0f, 0.0f); // Green
-          else if (code == 33)
-            currentColor = glm::vec3(1.0f, 1.0f, 0.0f); // Yellow
-          else if (code == 34)
-            currentColor = glm::vec3(0.0f, 0.0f, 1.0f); // Blue
-          else if (code == 35)
-            currentColor = glm::vec3(1.0f, 0.0f, 1.0f); // Magenta
-          else if (code == 36)
-            currentColor = glm::vec3(0.0f, 1.0f, 1.0f); // Cyan
-          else if (code == 37)
-            currentColor = glm::vec3(1.0f, 1.0f, 1.0f); // White
+          static const glm::vec3 colors[] = {{0, 0, 0}, {1, 0, 0}, {0, 1, 0},
+                                             {1, 1, 0}, {0, 0, 1}, {1, 0, 1},
+                                             {0, 1, 1}, {1, 1, 1}};
+          currentColor = colors[code - 30];
         }
       };
 
@@ -136,13 +183,25 @@ void Terminal::handleCsi(char finalByte) {
       if (hasVal)
         applyCode(currentVal);
     }
-  } else if (finalByte == 'K') {
-    // Erase in Line
-  } else if (finalByte == 'J') {
-    // Clear screen
+  } else if (finalByte == 'J') { // Erase in Display
     if (csiParams == "2") {
       lines.clear();
       lines.push_back(std::vector<TerminalGlyph>());
+      cursorX = 0;
+      cursorY = 0;
+    }
+  } else if (finalByte == 'K') { // Erase in Line
+    // 0: cursor to end, 1: start to cursor, 2: all
+    // Default 0
+    int mode = csiParams.empty() ? 0 : std::stoi(csiParams);
+    if (lines.size() > cursorY) {
+      if (mode == 0) {
+        if (lines[cursorY].size() > cursorX) {
+          lines[cursorY].resize(cursorX);
+        }
+      } else if (mode == 2) {
+        lines[cursorY].clear();
+      }
     }
   }
 }
@@ -211,6 +270,102 @@ void Terminal::changeScale(float delta) {
 
   // Update line height (Base 20.0f)
   lineHeight = 20.0f * scale;
+}
+
+// Selection Implementation
+Terminal::Point Terminal::screenToGrid(float x, float y) {
+  // Estimations
+  float charW = 11.0f * scale;
+
+  float topY = screenHeight;
+  float distFromTop = topY - y;
+  int row = (int)(distFromTop / lineHeight); // Visual row 0..N
+
+  int maxLines = (int)(screenHeight / lineHeight);
+  int totalLines = lines.size();
+  int startLine = 0;
+  if (totalLines > maxLines) {
+    startLine = totalLines - maxLines - scrollOffset;
+    if (startLine < 0)
+      startLine = 0;
+  }
+
+  int absoluteRow = startLine + row;
+
+  float paddingX = 10.0f;
+  int col = (int)((x - paddingX) / charW);
+
+  if (col < 0)
+    col = 0;
+  // We allow col to go beyond line length to select empty space/newlines
+
+  if (absoluteRow < 0)
+    absoluteRow = 0;
+  if (absoluteRow >= totalLines)
+    absoluteRow = totalLines - 1;
+  if (lines.empty())
+    absoluteRow = 0;
+
+  return {absoluteRow, col};
+}
+
+void Terminal::startSelection(float mouseX, float mouseY) {
+  selectionStart = screenToGrid(mouseX, mouseY);
+  selectionEnd = selectionStart;
+  isSelecting = true;
+}
+
+void Terminal::updateSelection(float mouseX, float mouseY) {
+  if (isSelecting) {
+    selectionEnd = screenToGrid(mouseX, mouseY);
+  }
+}
+
+void Terminal::clearSelection() {
+  isSelecting = false;
+  selectionStart = {-1, -1};
+  selectionEnd = {-1, -1};
+}
+
+bool Terminal::hasSelection() const {
+  return isSelecting && !(selectionStart == selectionEnd);
+}
+
+std::string Terminal::getSelectionText() {
+  if (!hasSelection())
+    return "";
+
+  Point p1 = selectionStart;
+  Point p2 = selectionEnd;
+
+  // Order them
+  if (p2 < p1)
+    std::swap(p1, p2);
+
+  std::string res = "";
+
+  for (int r = p1.row; r <= p2.row; r++) {
+    if (r < 0 || r >= lines.size())
+      continue;
+
+    const auto &line = lines[r];
+    int startCol = (r == p1.row) ? p1.col : 0;
+    int endCol = (r == p2.row) ? p2.col : 99999; // End of line
+
+    for (int c = startCol; c <= endCol; c++) {
+      if (c < line.size()) {
+        res += line[c].character;
+      } else if (c == line.size()) {
+        // Determine if we should include a newline
+        // Generally yes if we selected past the end
+        if (r != p2.row) { // Don't add newline if it's the very last selected
+                           // item unless we really selected it
+          res += "\n";
+        }
+      }
+    }
+  }
+  return res;
 }
 
 void Terminal::render(Renderer &renderer, FontManager &fontManager,
@@ -288,10 +443,8 @@ void Terminal::render(Renderer &renderer, FontManager &fontManager,
   for (int i = startLine; i < endLine; i++) {
     float x = 10.0f; // Padding
 
-    // Draw cursor if this is the last line (active line)
-    // Note: cursorX is relative to the active line.
-    // If lines.size() represents history, the active line is lines.back().
-    bool isCurrentLine = (i == lines.size() - 1);
+    // Draw cursor if this is the active line
+    bool isCurrentLine = (i == cursorY);
 
     // Calculate cursor position by traversing glyphs up to cursorX
     float cursorDrawX = x;
