@@ -15,6 +15,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods);
 void char_callback(GLFWwindow *window, unsigned int codepoint);
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
 
 int main() {
   glfwInit();
@@ -37,6 +38,7 @@ int main() {
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
   glfwSetKeyCallback(window, key_callback);
   glfwSetCharCallback(window, char_callback);
+  glfwSetScrollCallback(window, scroll_callback);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
@@ -148,7 +150,34 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods) {
   if (globalTerminal && globalPTY) {
+    if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+      if (key == GLFW_KEY_PAGE_UP && (mods & GLFW_MOD_SHIFT)) {
+        globalTerminal->scroll(10);
+        return;
+      }
+      if (key == GLFW_KEY_PAGE_DOWN && (mods & GLFW_MOD_SHIFT)) {
+        globalTerminal->scroll(-10);
+        return;
+      }
+    }
     globalTerminal->handleInput(key, action, mods, *globalPTY);
+  }
+}
+
+// Trackpad scroll accumulator
+double scrollAccumulator = 0.0;
+
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
+  if (globalTerminal) {
+    // Accumulate the scroll amount (yoffset is often small float for trackpads)
+    scrollAccumulator += yoffset * 3.0; // Multiplier for speed
+
+    // Only scroll if we have accumulated at least 1 line
+    if (std::abs(scrollAccumulator) >= 1.0) {
+      int lines = (int)scrollAccumulator;
+      globalTerminal->scroll(lines);
+      scrollAccumulator -= lines;
+    }
   }
 }
 

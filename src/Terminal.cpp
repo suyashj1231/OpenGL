@@ -25,6 +25,8 @@ void Terminal::processOutput(std::string output) {
         cursorX = 0;
         // Reset color to default on newline (assumes end of input/output line)
         currentColor = defaultColor;
+        // Reset scroll when typing/outputting
+        scrollToBottom();
       } else if (c == '\r') {
         // Carriage Return: Return to start of line
         cursorX = 0;
@@ -147,6 +149,12 @@ void Terminal::handleCsi(char finalByte) {
 
 void Terminal::handleInput(int key, int action, int mods, PTYHandler &pty) {
   if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+    // If user presses a key, jump to bottom (unless it's shift keys used for
+    // scrolling)
+    if (key != GLFW_KEY_LEFT_SHIFT && key != GLFW_KEY_RIGHT_SHIFT) {
+      scrollToBottom();
+    }
+
     // User is typing -> Switch to Input Color (Gold)
     currentColor = inputColor;
 
@@ -174,14 +182,47 @@ void Terminal::setSize(float width, float height) {
   screenHeight = height;
 }
 
+void Terminal::scroll(int amount) {
+  scrollOffset += amount;
+  // Clamp
+  int maxLines = (int)(screenHeight / lineHeight);
+  int totalLines = lines.size();
+  if (totalLines <= maxLines) {
+    scrollOffset = 0;
+    return;
+  }
+
+  int maxScroll = totalLines - maxLines;
+  if (scrollOffset > maxScroll)
+    scrollOffset = maxScroll;
+  if (scrollOffset < 0)
+    scrollOffset = 0;
+}
+
+void Terminal::scrollToBottom() { scrollOffset = 0; }
+
 void Terminal::render(Renderer &renderer, FontManager &fontManager,
                       float deltaTime) {
   float y = screenHeight - lineHeight; // Start from top
   int maxLines = (int)(screenHeight / lineHeight);
+
+  // Calculate start line based on scrollOffset
+  // If we have 100 lines, maxLines 20, scrollOffset 0 -> show 80-99
+  // scrollOffset 10 -> show 70-89
+
+  int totalLines = lines.size();
   int startLine = 0;
-  if (lines.size() > maxLines) {
-    startLine = lines.size() - maxLines;
+
+  if (totalLines > maxLines) {
+    startLine = totalLines - maxLines - scrollOffset;
+    if (startLine < 0)
+      startLine = 0;
   }
+
+  // We only draw up to maxLines
+  int endLine = startLine + maxLines;
+  if (endLine > totalLines)
+    endLine = totalLines;
 
   // Cursor Blinking Logic
   cursorTimer += deltaTime;
@@ -190,7 +231,7 @@ void Terminal::render(Renderer &renderer, FontManager &fontManager,
     showCursor = !showCursor;
   }
 
-  for (int i = startLine; i < lines.size(); i++) {
+  for (int i = startLine; i < endLine; i++) {
     float x = 10.0f; // Padding
 
     // Draw cursor if this is the last line (active line)

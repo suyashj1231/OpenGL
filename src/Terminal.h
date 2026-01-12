@@ -22,12 +22,19 @@ public:
   // Resize handling
   void setSize(float width, float height);
 
+  // Scrolling
+  void scroll(int amount);
+  void scrollToBottom();
+
 private:
   float screenWidth;
   float screenHeight;
   float lineHeight;
   float scale;
   glm::vec3 textColor;
+
+  // Scroll State
+  int scrollOffset = 0; // 0 = at bottom/newest lines
 
   // Color State
   struct TerminalGlyph {
