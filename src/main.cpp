@@ -104,6 +104,13 @@ int main() {
 
   if (pty.spawnShell()) {
     std::cout << "Shell spawned successfully" << std::endl;
+    // Inject custom prompt command to override .zshrc/.bashrc
+    // Zsh syntax: %F{color} for foreground
+    // Changed %F{blue} to %F{green} for directory
+    // Chain 'clear' to minimize flash of original prompt
+    std::string cmd = "export PS1=\"%F{cyan}➜ %F{yellow}%n@opengl %F{green}%1d "
+                      "%f%% \"; clear\n";
+    pty.writeInput(cmd);
   } else {
     std::cout << "Failed to spawn shell" << std::endl;
   }
@@ -114,10 +121,25 @@ int main() {
   float deltaTime = 0.0f;
   float lastFrame = 0.0f;
 
+  // FPS
+  int frameCount = 0;
+  float fpsTimer = 0.0f;
+  std::string fpsText = "FPS: 0";
+
   while (!glfwWindowShouldClose(window)) {
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
+
+    // FPS Calculation
+    frameCount++;
+    fpsTimer += deltaTime;
+    if (fpsTimer >= 1.0f) {
+      fpsText = "FPS: " + std::to_string(frameCount);
+      frameCount = 0;
+      fpsTimer = 0.0f;
+      // std::cout << fpsText << std::endl;
+    }
 
     // Poll PTY
     std::string output = pty.readOutput();
@@ -131,6 +153,10 @@ int main() {
 
     background.render(deltaTime);
     terminal.render(renderer, fontManager, deltaTime);
+
+    // Render FPS (Top Right, Green)
+    renderer.drawText(fontManager, fpsText, 800.0f - 100.0f, 600.0f - 30.0f,
+                      1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
     glfwSwapBuffers(window);
     glfwPollEvents();

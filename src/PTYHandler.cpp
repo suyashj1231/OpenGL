@@ -25,7 +25,19 @@ bool PTYHandler::spawnShell() {
     // Child process
     // Execute the shell
     // Set TERM for color support
+    // Set TERM for color support
     setenv("TERM", "xterm-256color", 1);
+
+    // Custom Prompt: Cyan Arrow -> Gold User -> Reset
+    // Note: We use ANSI codes directly.
+    // \e[1;36m = Bright Cyan
+    // \e[1;33m = Bright Box (Gold-ish)
+    // \u = User
+    // \w = Working Directory
+    setenv("PS1",
+           "\\[\\e[1;36m\\]➜ \\[\\e[1;33m\\]\\u@opengl \\[\\e[1;34m\\]\\W "
+           "\\[\\e[0m\\]% ",
+           1);
 
     const char *shell = getenv("SHELL");
     if (!shell)
