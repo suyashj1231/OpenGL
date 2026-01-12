@@ -6,6 +6,8 @@ TerminalGL is a custom-built, hardware-accelerated terminal emulator written in 
 
 Powered by a custom **Batch Rendering Engine** and **Dynamic Texture Atlasing**, it handles thousands of characters with negligible CPU usage. It's not just a terminal; it's a graphical experience.
 
+![TerminalGL Demo](res/readme1.png)
+
 ---
 
 ## 🚀 Features
