@@ -34,5 +34,11 @@
   "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2 -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp",
   "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp",
   "output": "CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o"
+},
+{
+  "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
+  "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2 -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/Background.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/Background.cpp",
+  "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/Background.cpp",
+  "output": "CMakeFiles/OpenGL.dir/src/Background.cpp.o"
 }
 ]

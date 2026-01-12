@@ -129,6 +129,30 @@ OpenGL/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/build
 .PHONY : OpenGL/fast
 
+src/Background.o: src/Background.cpp.o
+.PHONY : src/Background.o
+
+# target to build an object file
+src/Background.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Background.cpp.o
+.PHONY : src/Background.cpp.o
+
+src/Background.i: src/Background.cpp.i
+.PHONY : src/Background.i
+
+# target to preprocess a source file
+src/Background.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Background.cpp.i
+.PHONY : src/Background.cpp.i
+
+src/Background.s: src/Background.cpp.s
+.PHONY : src/Background.s
+
+# target to generate assembly for a file
+src/Background.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Background.cpp.s
+.PHONY : src/Background.cpp.s
+
 src/FontManager.o: src/FontManager.cpp.o
 .PHONY : src/FontManager.o
 
@@ -282,6 +306,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... OpenGL"
+	@echo "... src/Background.o"
+	@echo "... src/Background.i"
+	@echo "... src/Background.s"
 	@echo "... src/FontManager.o"
 	@echo "... src/FontManager.i"
 	@echo "... src/FontManager.s"

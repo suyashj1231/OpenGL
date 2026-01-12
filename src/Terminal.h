@@ -34,7 +34,7 @@ private:
     char character;
     glm::vec3 color;
   };
-  glm::vec3 currentColor{0.0f, 1.0f, 0.0f}; // Default Green
+  glm::vec3 currentColor{1.0f, 1.0f, 1.0f}; // Default white
   std::vector<std::vector<TerminalGlyph>> lines;
 
   // Cursor State

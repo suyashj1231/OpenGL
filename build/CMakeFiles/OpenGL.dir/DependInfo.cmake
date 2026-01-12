@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/suyashjain/Documents/GitHub/OpenGL/src/glad.c" "CMakeFiles/OpenGL.dir/src/glad.c.o" "gcc" "CMakeFiles/OpenGL.dir/src/glad.c.o.d"
+  "/Users/suyashjain/Documents/GitHub/OpenGL/src/Background.cpp" "CMakeFiles/OpenGL.dir/src/Background.cpp.o" "gcc" "CMakeFiles/OpenGL.dir/src/Background.cpp.o.d"
   "/Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.cpp" "CMakeFiles/OpenGL.dir/src/FontManager.cpp.o" "gcc" "CMakeFiles/OpenGL.dir/src/FontManager.cpp.o.d"
   "/Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp" "CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o" "gcc" "CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o.d"
   "/Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.cpp" "CMakeFiles/OpenGL.dir/src/Renderer.cpp.o" "gcc" "CMakeFiles/OpenGL.dir/src/Renderer.cpp.o.d"

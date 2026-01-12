@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/OpenGL.dir/src/Background.cpp.o"
+  "CMakeFiles/OpenGL.dir/src/Background.cpp.o.d"
   "CMakeFiles/OpenGL.dir/src/FontManager.cpp.o"
   "CMakeFiles/OpenGL.dir/src/FontManager.cpp.o.d"
   "CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o"

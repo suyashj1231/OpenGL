@@ -1,12 +1,13 @@
 #include "config.h"
 
+#include "Background.h"
 #include "FontManager.h"
 #include "PTYHandler.h"
 #include "Renderer.h"
 #include "Shader.h"
 #include "Terminal.h"
 
-// Global state for callbacks
+// Global state
 Terminal *globalTerminal = nullptr;
 PTYHandler *globalPTY = nullptr;
 
@@ -92,6 +93,13 @@ int main() {
   PTYHandler pty;
   globalPTY = &pty;
 
+  Background background;
+  // Try to load a gif if it exists, otherwise warn
+  if (!background.load("res/bg.gif")) {
+    std::cout << "Usage: Place a 'bg.gif' in 'res/' folder to see it!"
+              << std::endl;
+  }
+
   if (pty.spawnShell()) {
     std::cout << "Shell spawned successfully" << std::endl;
   } else {
@@ -100,7 +108,15 @@ int main() {
 
   pty.setWindowSize(15, 80); // Approximate
 
+  // Timing
+  float deltaTime = 0.0f;
+  float lastFrame = 0.0f;
+
   while (!glfwWindowShouldClose(window)) {
+    float currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+
     // Poll PTY
     std::string output = pty.readOutput();
     if (!output.empty()) {
@@ -111,6 +127,7 @@ int main() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    background.render(deltaTime);
     terminal.render(renderer, fontManager);
 
     glfwSwapBuffers(window);
