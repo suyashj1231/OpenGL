@@ -10,6 +10,7 @@
 // Global state
 Terminal *globalTerminal = nullptr;
 PTYHandler *globalPTY = nullptr;
+bool vsyncEnabled = true;
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
@@ -38,7 +39,11 @@ int main() {
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
   glfwSetKeyCallback(window, key_callback);
   glfwSetCharCallback(window, char_callback);
+  glfwSetCharCallback(window, char_callback);
   glfwSetScrollCallback(window, scroll_callback);
+
+  // Default VSync ON
+  glfwSwapInterval(1);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
@@ -134,17 +139,39 @@ int main() {
     // FPS Calculation
     frameCount++;
     fpsTimer += deltaTime;
+    fpsTimer += deltaTime;
     if (fpsTimer >= 1.0f) {
-      fpsText = "FPS: " + std::to_string(frameCount);
+      fpsText = "FPS: " + std::to_string(frameCount) +
+                (vsyncEnabled ? " (VSync)" : " (Uncapped)");
       frameCount = 0;
       fpsTimer = 0.0f;
-      // std::cout << fpsText << std::endl;
     }
 
     // Poll PTY
     std::string output = pty.readOutput();
     if (!output.empty()) {
       terminal.processOutput(output);
+    }
+
+    // Update Projection (Handle Resize)
+    int scrWidth, scrHeight;
+    glfwGetFramebufferSize(window, &scrWidth, &scrHeight);
+
+    // Check minimize
+    if (scrWidth == 0 || scrHeight == 0) {
+      glfwPollEvents();
+      continue;
+    }
+
+    glm::mat4 projection =
+        glm::ortho(0.0f, (float)scrWidth, 0.0f, (float)scrHeight);
+    shader.use();
+    shader.setMat4("projection", &projection[0][0]);
+
+    // Update terminal size if needed (might be redundant if callback does it,
+    // but safe)
+    if (globalTerminal) {
+      globalTerminal->setSize((float)scrWidth, (float)scrHeight);
     }
 
     // Render
@@ -155,7 +182,11 @@ int main() {
     terminal.render(renderer, fontManager, deltaTime);
 
     // Render FPS (Top Right, Green)
-    renderer.drawText(fontManager, fpsText, 800.0f - 100.0f, 600.0f - 30.0f,
+    // Align right: Width - EstimatedTextWidth
+    // "FPS: 60 (Uncapped)" is approx 18 chars. * 10px = 180px.
+    // Let's rely on a safe padding.
+    float textX = (float)scrWidth - 220.0f;
+    renderer.drawText(fontManager, fpsText, textX, (float)scrHeight - 30.0f,
                       1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
     glfwSwapBuffers(window);
@@ -192,6 +223,16 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
         if (clipboard) {
           globalPTY->writeInput(clipboard);
         }
+        if (clipboard) {
+          globalPTY->writeInput(clipboard);
+        }
+        return;
+      }
+
+      // FPS Toggle (F3)
+      if (key == GLFW_KEY_F3) {
+        vsyncEnabled = !vsyncEnabled;
+        glfwSwapInterval(vsyncEnabled ? 1 : 0);
         return;
       }
     }
