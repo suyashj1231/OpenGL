@@ -16,7 +16,7 @@ public:
   void handleInput(int key, int action, int mods, PTYHandler &pty);
 
   // Rendering
-  void render(Renderer &renderer, FontManager &fontManager);
+  void render(Renderer &renderer, FontManager &fontManager, float deltaTime);
   void write(std::string text); // Deprecated utility
 
   // Resize handling
@@ -34,11 +34,18 @@ private:
     char character;
     glm::vec3 color;
   };
-  glm::vec3 currentColor{1.0f, 1.0f, 1.0f}; // Default white
+  glm::vec3 currentColor{1.0f, 1.0f, 1.0f}; // Current drawing color
+
+  // Color configuration
+  const glm::vec3 defaultColor{1.0f, 1.0f, 1.0f}; // White for Output
+  const glm::vec3 inputColor{1.0f, 0.8f, 0.2f};   // Gold for Input
   std::vector<std::vector<TerminalGlyph>> lines;
 
   // Cursor State
   int cursorX = 0;
+  float cursorTimer = 0.0f;
+  bool showCursor = true;
+  glm::vec3 cursorColor{0.0f, 1.0f, 1.0f}; // Default Cyan Cursor
 
   // Internal helper
   void appendText(std::string text);

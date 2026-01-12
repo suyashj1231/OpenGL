@@ -8,8 +8,8 @@ Terminal::Terminal(float width, float height)
     : screenWidth(width), screenHeight(height), lineHeight(20.0f), scale(1.0f),
       textColor(glm::vec3(1.0f, 1.0f, 1.0f)) {
   // No initial prompt, the shell will provide it
-  // Default to White
-  currentColor = glm::vec3(1.0f, 1.0f, 1.0f);
+  // Default to Gold
+  currentColor = defaultColor;
 }
 
 // Deprecated write method, replacing internal logic
@@ -23,6 +23,8 @@ void Terminal::processOutput(std::string output) {
       } else if (c == '\n') {
         lines.push_back(std::vector<TerminalGlyph>());
         cursorX = 0;
+        // Reset color to default on newline (assumes end of input/output line)
+        currentColor = defaultColor;
       } else if (c == '\r') {
         // Carriage Return: Return to start of line
         cursorX = 0;
@@ -85,7 +87,7 @@ void Terminal::handleCsi(char finalByte) {
     // SGR - Select Graphic Rendition
     // std::cout << "[CSI] SGR: " << csiParams << std::endl;
     if (csiParams.empty() || csiParams == "0") {
-      currentColor = glm::vec3(1.0f, 1.0f, 1.0f); // Reset to White
+      currentColor = defaultColor; // Reset to Default
     } else {
       std::stringstream ss(csiParams);
       std::string segment;
@@ -97,7 +99,7 @@ void Terminal::handleCsi(char finalByte) {
 
       auto applyCode = [&](int code) {
         if (code == 0) {
-          currentColor = glm::vec3(1.0f, 1.0f, 1.0f); // Reset to White
+          currentColor = defaultColor; // Reset to Default
         } else if (code >= 30 && code <= 37) {
           if (code == 30)
             currentColor = glm::vec3(0.0f, 0.0f, 0.0f); // Black
@@ -145,6 +147,9 @@ void Terminal::handleCsi(char finalByte) {
 
 void Terminal::handleInput(int key, int action, int mods, PTYHandler &pty) {
   if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+    // User is typing -> Switch to Input Color (Gold)
+    currentColor = inputColor;
+
     if (key == GLFW_KEY_ENTER) {
       pty.writeInput("\n");
     } else if (key == GLFW_KEY_BACKSPACE) {
@@ -169,7 +174,8 @@ void Terminal::setSize(float width, float height) {
   screenHeight = height;
 }
 
-void Terminal::render(Renderer &renderer, FontManager &fontManager) {
+void Terminal::render(Renderer &renderer, FontManager &fontManager,
+                      float deltaTime) {
   float y = screenHeight - lineHeight; // Start from top
   int maxLines = (int)(screenHeight / lineHeight);
   int startLine = 0;
@@ -177,19 +183,55 @@ void Terminal::render(Renderer &renderer, FontManager &fontManager) {
     startLine = lines.size() - maxLines;
   }
 
+  // Cursor Blinking Logic
+  cursorTimer += deltaTime;
+  if (cursorTimer >= 0.5f) {
+    cursorTimer = 0.0f;
+    showCursor = !showCursor;
+  }
+
   for (int i = startLine; i < lines.size(); i++) {
-    float x = 10.0f;
-    for (const auto &glyph : lines[i]) {
+    float x = 10.0f; // Padding
+
+    // Draw cursor if this is the last line (active line)
+    // Note: cursorX is relative to the active line.
+    // If lines.size() represents history, the active line is lines.back().
+    bool isCurrentLine = (i == lines.size() - 1);
+
+    // Calculate cursor position by traversing glyphs up to cursorX
+    float cursorDrawX = x;
+
+    for (int j = 0; j < lines[i].size(); j++) {
+      const auto &glyph = lines[i][j];
+      if (isCurrentLine && j == cursorX) {
+        cursorDrawX = x;
+      }
+
       std::string s(1, glyph.character);
-      // Draw one char at a time with its color
-      // Note: this is inefficient but functional for now
       renderer.drawText(fontManager, s, x, y, scale, glyph.color);
 
-      // Manually advance X because drawText doesn't return advanced position
-      // We need to query the font manager for advance
       Character ch = fontManager.getCharacter(glyph.character);
       x += (ch.Advance >> 6) * scale;
     }
+
+    // If cursor is at the end (appending)
+    if (isCurrentLine && cursorX >= lines[i].size()) {
+      cursorDrawX = x;
+    }
+
+    // Draw Cursor
+    if (isCurrentLine && showCursor) {
+      // height typically lineHeight, width typically 10-ish?
+      // Let's assume width of a space or 'M'
+      float w = 10.0f;
+      // Try getting 'M' width
+      // Character chM = fontManager.getCharacter('M');
+      // w = (chM.Advance >> 6) * scale;
+
+      // Draw solid block
+      renderer.drawRect(cursorDrawX, y, w, lineHeight, cursorColor);
+    }
+
     y -= lineHeight;
   }
 }

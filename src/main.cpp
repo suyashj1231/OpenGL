@@ -128,7 +128,7 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     background.render(deltaTime);
-    terminal.render(renderer, fontManager);
+    terminal.render(renderer, fontManager, deltaTime);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
