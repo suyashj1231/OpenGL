@@ -26,12 +26,46 @@ public:
   void scroll(int amount);
   void scrollToBottom();
 
+  // Zoom
+  void changeScale(float delta);
+  float getScale() const { return scale; }
+
+  // Selection
+  struct Point {
+    int row;
+    int col;
+    bool operator==(const Point &other) const {
+      return row == other.row && col == other.col;
+    }
+    bool operator<(const Point &other) const {
+      if (row != other.row)
+        return row < other.row;
+      return col < other.col;
+    }
+  };
+
+  void startSelection(float mouseX, float mouseY);
+  void updateSelection(float mouseX, float mouseY);
+  void clearSelection();
+  std::string getSelectionText();
+  bool hasSelection() const;
+
 private:
   float screenWidth;
   float screenHeight;
   float lineHeight;
   float scale;
   glm::vec3 textColor;
+
+  // Selection State
+  Point selectionStart = {-1, -1};
+  Point selectionEnd = {-1, -1};
+  bool isSelecting = false;
+  glm::vec3 selectionColor{0.3f, 0.3f,
+                           0.3f}; // Dark Grey background for selection
+
+  // Helper to convert screen coordinates to grid coordinates
+  Point screenToGrid(float x, float y);
 
   // Scroll State
   int scrollOffset = 0; // 0 = at bottom/newest lines

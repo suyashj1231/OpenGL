@@ -201,15 +201,24 @@ void Terminal::scroll(int amount) {
 
 void Terminal::scrollToBottom() { scrollOffset = 0; }
 
+void Terminal::changeScale(float delta) {
+  scale += delta;
+  // Clamp
+  if (scale < 0.5f)
+    scale = 0.5f;
+  if (scale > 3.0f)
+    scale = 3.0f;
+
+  // Update line height (Base 20.0f)
+  lineHeight = 20.0f * scale;
+}
+
 void Terminal::render(Renderer &renderer, FontManager &fontManager,
                       float deltaTime) {
   float y = screenHeight - lineHeight; // Start from top
   int maxLines = (int)(screenHeight / lineHeight);
 
   // Calculate start line based on scrollOffset
-  // If we have 100 lines, maxLines 20, scrollOffset 0 -> show 80-99
-  // scrollOffset 10 -> show 70-89
-
   int totalLines = lines.size();
   int startLine = 0;
 
@@ -229,6 +238,51 @@ void Terminal::render(Renderer &renderer, FontManager &fontManager,
   if (cursorTimer >= 0.5f) {
     cursorTimer = 0.0f;
     showCursor = !showCursor;
+  }
+
+  // Selection Rects
+  Point p1 = selectionStart;
+  Point p2 = selectionEnd;
+  if (isSelecting && (p1.row != -1)) {
+    if (p2 < p1)
+      std::swap(p1, p2);
+
+    // Draw Selection Highlights
+    float selY = y;
+    for (int i = startLine; i < endLine; i++) {
+      // Check if row i is inside selection range (row-wise)
+      if (i >= p1.row && i <= p2.row) {
+        float x = 10.0f;
+        float charW = 11.0f * scale; // Estimate
+
+        // Define col range for this row
+        int startCol = (i == p1.row) ? p1.col : 0;
+        int endCol = (i == p2.row) ? p2.col : 99999;
+
+        // Render a big rect for the selected range in this line?
+        // Or char by char? Big rect is faster.
+
+        // Clamp endCol to line size (plus 1 for potential newline selection)
+        int lineLen = lines[i].size();
+        int actualEndCol = (endCol > lineLen)
+                               ? lineLen
+                               : endCol; // Allow selecting slightly past text
+
+        if (startCol <= actualEndCol) {
+          float startX = 10.0f + startCol * charW;
+          float width = (actualEndCol - startCol + 1) *
+                        charW; // +1 to capture the char itself
+          // If dragging backwards? No we swapped p1/p2.
+
+          // If startCol > actualEndCol (empty line or weirdness), width might
+          // be 0 or neg
+          if (width > 0) {
+            renderer.drawRect(startX, selY, width, lineHeight, selectionColor);
+          }
+        }
+      }
+      selY -= lineHeight;
+    }
   }
 
   for (int i = startLine; i < endLine; i++) {

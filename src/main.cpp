@@ -12,6 +12,7 @@ Terminal *globalTerminal = nullptr;
 PTYHandler *globalPTY = nullptr;
 bool vsyncEnabled = true;
 
+void updatePTYSize(int width, int height);
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods);
@@ -197,19 +198,32 @@ int main() {
   return 0;
 }
 
+void updatePTYSize(int width, int height) {
+  if (globalPTY && globalTerminal) {
+    float scale = globalTerminal->getScale();
+    // Estimated char dimensions (Monaco 18 base)
+    float charW = 11.0f * scale;
+    float charH = 20.0f * scale;
+
+    int cols = (int)(width / charW);
+    int rows = (int)(height / charH);
+
+    // Ensure at least 1x1
+    if (cols < 1)
+      cols = 1;
+    if (rows < 1)
+      rows = 1;
+
+    globalPTY->setWindowSize(rows, cols);
+  }
+}
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
   if (globalTerminal) {
     globalTerminal->setSize(width, height);
   }
-  if (globalPTY) {
-    // Estimate based on Monaco 18 (approx 11px wide, 20px high line with
-    // padding) width / 11 is a decent approximation for cols height / 20 is
-    // lines
-    int cols = width / 11;
-    int rows = height / 20;
-    globalPTY->setWindowSize(rows, cols);
-  }
+  updatePTYSize(width, height);
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
@@ -243,6 +257,33 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
         glfwSwapInterval(vsyncEnabled ? 1 : 0);
         return;
       }
+
+      // Zoom In (Cmd + Equal/Plus)
+      if (key == GLFW_KEY_EQUAL && (mods & GLFW_MOD_SUPER)) {
+        globalTerminal->changeScale(0.1f);
+        int w, h;
+        glfwGetFramebufferSize(window, &w, &h);
+        updatePTYSize(w, h);
+        return;
+      }
+
+      // Zoom Out (Cmd + Minus) - Note: GLFW_KEY_MINUS
+      if (key == GLFW_KEY_MINUS && (mods & GLFW_MOD_SUPER)) {
+        globalTerminal->changeScale(-0.1f);
+        int w, h;
+        glfwGetFramebufferSize(window, &w, &h);
+        updatePTYSize(w, h);
+        return;
+      }
+
+      // Copy: Cmd+C (Super+C)
+      if (key == GLFW_KEY_C && (mods & GLFW_MOD_SUPER)) {
+        if (globalTerminal && globalTerminal->hasSelection()) {
+          std::string text = globalTerminal->getSelectionText();
+          glfwSetClipboardString(window, text.c_str());
+        }
+        return;
+      }
     }
     globalTerminal->handleInput(key, action, mods, *globalPTY);
   }
@@ -262,6 +303,43 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
       globalTerminal->scroll(lines);
       scrollAccumulator -= lines;
     }
+  }
+}
+
+// Mouse Interactions
+bool isDragging = false;
+void mouse_button_callback(GLFWwindow *window, int button, int action,
+                           int mods) {
+  if (button == GLFW_MOUSE_BUTTON_LEFT) {
+    if (action == GLFW_PRESS) {
+      isDragging = true;
+      double x, y;
+      glfwGetCursorPos(window, &x, &y);
+      // Flip Y for terminal? No, terminal logic expects GlFW/Screen Y but does
+      // its own inversion Actually Terminal::screenToGrid expects OpenGL Y (0
+      // at bottom)? "Y is from bottom in OpenGL... y=screenHeight corresponds
+      // to top" glfwGetCursorPos returns 0 at TOP. So we need to convert glfw Y
+      // to OpenGL Y: height - glfwY
+
+      int w, h;
+      glfwGetFramebufferSize(window, &w, &h);
+      float glY = (float)h - (float)y;
+
+      if (globalTerminal) {
+        globalTerminal->startSelection((float)x, glY);
+      }
+    } else if (action == GLFW_RELEASE) {
+      isDragging = false;
+    }
+  }
+}
+
+void cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
+  if (isDragging && globalTerminal) {
+    int w, h;
+    glfwGetFramebufferSize(window, &w, &h);
+    float glY = (float)h - (float)ypos;
+    globalTerminal->updateSelection((float)xpos, glY);
   }
 }
 
