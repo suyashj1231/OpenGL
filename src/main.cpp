@@ -80,8 +80,8 @@ int main() {
 
   Renderer renderer(shader);
   FontManager fontManager;
-  if (!fontManager.loadFont("/System/Library/Fonts/Monaco.ttf", 48)) {
-    if (!fontManager.loadFont("/Library/Fonts/Arial.ttf", 48)) {
+  if (!fontManager.loadFont("/System/Library/Fonts/Monaco.ttf", 18)) {
+    if (!fontManager.loadFont("/Library/Fonts/Arial.ttf", 18)) {
       std::cout << "Failed to load font" << std::endl;
     }
   }
