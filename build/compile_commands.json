@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
+  "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/main.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/main.cpp",
+  "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/main.cpp",
+  "output": "CMakeFiles/OpenGL.dir/src/main.cpp.o"
+},
+{
+  "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
+  "command": "/usr/bin/clang  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/glad.c.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/glad.c",
+  "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/glad.c",
+  "output": "CMakeFiles/OpenGL.dir/src/glad.c.o"
+}
+]
