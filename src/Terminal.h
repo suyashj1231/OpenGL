@@ -29,7 +29,16 @@ private:
   float scale;
   glm::vec3 textColor;
 
-  std::vector<std::string> lines;
+  // Color State
+  struct TerminalGlyph {
+    char character;
+    glm::vec3 color;
+  };
+  glm::vec3 currentColor{1.0f, 1.0f, 1.0f}; // Default white
+  std::vector<std::vector<TerminalGlyph>> lines;
+
+  // Cursor State
+  int cursorX = 0;
 
   // Internal helper
   void appendText(std::string text);

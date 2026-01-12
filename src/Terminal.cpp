@@ -20,27 +20,38 @@ void Terminal::processOutput(std::string output) {
         parserState = ParserState::Esc;
       } else if (c == '\n') {
         lines.push_back(std::vector<TerminalGlyph>());
+        cursorX = 0;
       } else if (c == '\r') {
-        // Handle carriage return by clearing the current line to simulate
-        // overwrite
-        if (!lines.empty()) {
-          lines.back().clear();
-        }
+        // Carriage Return: Return to start of line
+        cursorX = 0;
       } else if (c == '\b') {
-        if (!lines.empty() && !lines.back().empty()) {
-          lines.back().pop_back();
+        // Backspace: move back one
+        if (cursorX > 0) {
+          cursorX--;
         }
       } else if (c == 7) {
         // bell
       } else {
-        if (c >= 32 || c == 9) {
-          if (lines.empty())
+        if (c >= 32 || c == 9) { // Printable or Tab
+          if (lines.empty()) {
             lines.push_back(std::vector<TerminalGlyph>());
+            cursorX = 0;
+          }
 
-          TerminalGlyph g;
-          g.character = c;
-          g.color = currentColor;
-          lines.back().push_back(g);
+          // Ensure space exists up to cursorX
+          if (lines.back().size() <= cursorX) {
+            while (lines.back().size() <= cursorX) {
+              TerminalGlyph g;
+              g.character = ' ';
+              g.color = currentColor;
+              lines.back().push_back(g);
+            }
+          }
+
+          // Overwrite at cursorX
+          lines.back()[cursorX].character = c;
+          lines.back()[cursorX].color = currentColor;
+          cursorX++;
         }
       }
     } else if (parserState == ParserState::Esc) {
