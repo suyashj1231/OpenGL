@@ -13,6 +13,8 @@ public:
 
   void drawText(FontManager &fontManager, std::string text, float x, float y,
                 float scale, glm::vec3 color);
+  void drawCodepoint(FontManager &fontManager, unsigned int codepoint, float x,
+                     float y, float scale, glm::vec3 color);
   void drawRect(float x, float y, float w, float h, glm::vec3 color);
 
 private:

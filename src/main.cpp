@@ -143,15 +143,69 @@ int main() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
+    // GPU Query Result Handling
+    GLuint64 startTime = 0, stopTime = 0;
+    static GLuint queryID[2] = {0, 0};
+    static bool queryInit = false;
+    static int frontDiff = 0;
+    static double gpuUsage = 0.0;
+
+    if (!queryInit) {
+      glGenQueries(2, queryID);
+      queryInit = true;
+    }
+
+    // Retrieve result from previous frame to avoid stall
+    GLuint64 timeElapsed = 0;
+    GLint available = 0;
+    // We actually just use GL_TIME_ELAPSED
+    // Double buffer queries
+    // query[0] = active this frame
+    // query[1] = active next frame? No
+    // Use simple swap
+
+    static int queryBack = 0;
+    static int queryFront = 1;
+
+    // Check if result is available for the front buffer
+    glGetQueryObjectiv(queryID[queryFront], GL_QUERY_RESULT_AVAILABLE,
+                       &available);
+
+    glBeginQuery(GL_TIME_ELAPSED, queryID[queryBack]);
+
     // FPS Calculation
     frameCount++;
     fpsTimer += deltaTime;
-    fpsTimer += deltaTime;
+
+    // Accumulate GPU time for averaging
+    static double accumulatedGpuTime = 0.0;
+    static double accumulatedFrameTime = 0.0;
+
+    if (available) {
+      glGetQueryObjectui64v(queryID[queryFront], GL_QUERY_RESULT, &timeElapsed);
+      double gpuSeconds = (double)timeElapsed / 1e9;
+      accumulatedGpuTime += gpuSeconds;
+      accumulatedFrameTime += deltaTime;
+    }
+
     if (fpsTimer >= 1.0f) {
       fpsText = "FPS: " + std::to_string(frameCount) +
                 (vsyncEnabled ? " (VSync)" : " (Uncapped)");
+
+      // Calculate Average GPU Usage
+      if (accumulatedFrameTime > 0.0) {
+        gpuUsage = (accumulatedGpuTime / accumulatedFrameTime) * 100.0;
+        if (gpuUsage > 100.0)
+          gpuUsage = 100.0;
+      } else {
+        gpuUsage = 0.0;
+      }
+
+      // Reset
       frameCount = 0;
       fpsTimer = 0.0f;
+      accumulatedGpuTime = 0.0;
+      accumulatedFrameTime = 0.0;
     }
 
     // Poll PTY
@@ -188,12 +242,19 @@ int main() {
     background.render(deltaTime);
     terminal.render(renderer, fontManager, deltaTime);
 
+    glEndQuery(GL_TIME_ELAPSED);
+    std::swap(queryBack, queryFront);
+
     // Render FPS (Top Right, Green)
     // Align right: Width - EstimatedTextWidth
     // "FPS: 60 (Uncapped)" is approx 18 chars. * 10px = 180px.
     // Let's rely on a safe padding.
     float textX = (float)scrWidth - 220.0f;
     renderer.drawText(fontManager, fpsText, textX, (float)scrHeight - 30.0f,
+                      1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    std::string gpuText = "GPU: " + std::to_string((int)gpuUsage) + "%";
+    renderer.drawText(fontManager, gpuText, textX, (float)scrHeight - 60.0f,
                       1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
     glfwSwapBuffers(window);
