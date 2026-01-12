@@ -111,6 +111,5 @@ Character FontManager::getCharacter(unsigned int codepoint) {
 
   // Advance cursor
   atlasX += w + 1;
-
   return character;
 }
