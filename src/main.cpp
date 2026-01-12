@@ -185,6 +185,15 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
         globalTerminal->scroll(-10);
         return;
       }
+
+      // Paste: Cmd+V (Super+V)
+      if (key == GLFW_KEY_V && (mods & GLFW_MOD_SUPER)) {
+        const char *clipboard = glfwGetClipboardString(window);
+        if (clipboard) {
+          globalPTY->writeInput(clipboard);
+        }
+        return;
+      }
     }
     globalTerminal->handleInput(key, action, mods, *globalPTY);
   }
