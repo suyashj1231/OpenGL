@@ -8,6 +8,8 @@ Terminal::Terminal(float width, float height)
     : screenWidth(width), screenHeight(height), lineHeight(20.0f), scale(1.0f),
       textColor(glm::vec3(1.0f, 1.0f, 1.0f)) {
   // No initial prompt, the shell will provide it
+  // Default to Green
+  currentColor = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 // Deprecated write method, replacing internal logic
@@ -81,8 +83,9 @@ void Terminal::processOutput(std::string output) {
 void Terminal::handleCsi(char finalByte) {
   if (finalByte == 'm') {
     // SGR - Select Graphic Rendition
+    // std::cout << "[CSI] SGR: " << csiParams << std::endl;
     if (csiParams.empty() || csiParams == "0") {
-      currentColor = glm::vec3(1.0f, 1.0f, 1.0f); // Reset
+      currentColor = glm::vec3(0.0f, 1.0f, 0.0f); // Reset to Green
     } else {
       std::stringstream ss(csiParams);
       std::string segment;
@@ -94,7 +97,7 @@ void Terminal::handleCsi(char finalByte) {
 
       auto applyCode = [&](int code) {
         if (code == 0) {
-          currentColor = glm::vec3(1.0f, 1.0f, 1.0f);
+          currentColor = glm::vec3(0.0f, 1.0f, 0.0f); // Reset to Green
         } else if (code >= 30 && code <= 37) {
           if (code == 30)
             currentColor = glm::vec3(0.0f, 0.0f, 0.0f); // Black

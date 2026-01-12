@@ -24,6 +24,9 @@ bool PTYHandler::spawnShell() {
   } else if (pid == 0) {
     // Child process
     // Execute the shell
+    // Set TERM for color support
+    setenv("TERM", "xterm-256color", 1);
+
     const char *shell = getenv("SHELL");
     if (!shell)
       shell = "/bin/sh";
