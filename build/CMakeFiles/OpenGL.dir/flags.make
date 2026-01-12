@@ -5,7 +5,7 @@
 # compile CXX with /usr/bin/clang++
 C_DEFINES = 
 
-C_INCLUDES = -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
+C_INCLUDES = -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2
 
 C_FLAGSarm64 = -g -arch arm64
 
@@ -13,7 +13,7 @@ C_FLAGS = -g -arch arm64
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
+CXX_INCLUDES = -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2
 
 CXX_FLAGSarm64 = -g -arch arm64
 

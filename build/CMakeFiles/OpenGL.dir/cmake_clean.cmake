@@ -1,4 +1,12 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/OpenGL.dir/src/FontManager.cpp.o"
+  "CMakeFiles/OpenGL.dir/src/FontManager.cpp.o.d"
+  "CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o"
+  "CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o.d"
+  "CMakeFiles/OpenGL.dir/src/Renderer.cpp.o"
+  "CMakeFiles/OpenGL.dir/src/Renderer.cpp.o.d"
+  "CMakeFiles/OpenGL.dir/src/Terminal.cpp.o"
+  "CMakeFiles/OpenGL.dir/src/Terminal.cpp.o.d"
   "CMakeFiles/OpenGL.dir/src/glad.c.o"
   "CMakeFiles/OpenGL.dir/src/glad.c.o.d"
   "CMakeFiles/OpenGL.dir/src/main.cpp.o"

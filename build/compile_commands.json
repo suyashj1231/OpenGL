@@ -1,14 +1,38 @@
 [
 {
   "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
-  "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/main.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/main.cpp",
+  "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2 -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/main.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/main.cpp",
   "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/main.cpp",
   "output": "CMakeFiles/OpenGL.dir/src/main.cpp.o"
 },
 {
   "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
-  "command": "/usr/bin/clang  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/glad.c.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/glad.c",
+  "command": "/usr/bin/clang  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2 -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/glad.c.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/glad.c",
   "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/glad.c",
   "output": "CMakeFiles/OpenGL.dir/src/glad.c.o"
+},
+{
+  "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
+  "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2 -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/Renderer.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.cpp",
+  "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.cpp",
+  "output": "CMakeFiles/OpenGL.dir/src/Renderer.cpp.o"
+},
+{
+  "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
+  "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2 -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/FontManager.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.cpp",
+  "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.cpp",
+  "output": "CMakeFiles/OpenGL.dir/src/FontManager.cpp.o"
+},
+{
+  "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
+  "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2 -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/Terminal.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.cpp",
+  "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.cpp",
+  "output": "CMakeFiles/OpenGL.dir/src/Terminal.cpp.o"
+},
+{
+  "directory": "/Users/suyashjain/Documents/GitHub/OpenGL/build",
+  "command": "/usr/bin/clang++  -I/Users/suyashjain/Documents/GitHub/OpenGL/dependencies -isystem /opt/homebrew/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include/freetype2 -g -arch arm64 -o CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp",
+  "file": "/Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp",
+  "output": "CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o"
 }
 ]

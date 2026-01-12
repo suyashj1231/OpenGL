@@ -6,6 +6,13 @@
 			[
 				{
 					"directoryIndex" : 0,
+					"id" : "Freetype::Freetype::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Freetype__Freetype-Debug-97112def8a7aea64922f.json",
+					"name" : "Freetype::Freetype",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "OpenGL::GL::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-OpenGL__GL-Debug-26e9a00c259b7faee376.json",
 					"name" : "OpenGL::GL",
@@ -31,6 +38,20 @@
 					"jsonFile" : "target-glfw-Debug-2c3c5516c8f91812b241.json",
 					"name" : "glfw",
 					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "glm::glm::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-glm__glm-Debug-d79c1ac9e80d8fe039b1.json",
+					"name" : "glm::glm",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "glm::glm-header-only::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-glm__glm-header-only-Debug-4816d7511b65697a2c3b.json",
+					"name" : "glm::glm-header-only",
+					"projectIndex" : 0
 				}
 			],
 			"directories" : 
@@ -41,7 +62,10 @@
 						0,
 						1,
 						2,
-						3
+						3,
+						4,
+						5,
+						6
 					],
 					"build" : ".",
 					"jsonFile" : "directory-.-Debug-9ad1a58d4644cf6543fa.json",
@@ -66,7 +90,10 @@
 						0,
 						1,
 						2,
-						3
+						3,
+						4,
+						5,
+						6
 					],
 					"directoryIndexes" : 
 					[
@@ -84,7 +111,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "OpenGL::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-OpenGL-Debug-ee5413befdd11bcd9b3f.json",
+					"jsonFile" : "target-OpenGL-Debug-c73e93569ab1ea5507ee.json",
 					"name" : "OpenGL",
 					"projectIndex" : 0
 				}

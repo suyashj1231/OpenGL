@@ -1,0 +1,15 @@
+Starting PTY Shell Test...
+Shell spawned.
+Waiting for prompt...
+Initial output (104 bytes).
+.[1m.[7m%.[27m.[1m.[0m                                                                               . .
+Sent command: echo 'Hello OpenGL Terminal'
+
+Listening for response...
+Chunk: '[0m[27m[24m[Jsuyashjain@dhcp-172-31-124-010 OpenGL % [K[?2004heecho 'Hello OpenGL Terminal'[?2004l
+'
+Found expected output!
+Accumulated Output:
+[0m[27m[24m[Jsuyashjain@dhcp-172-31-124-010 OpenGL % [K[?2004heecho 'Hello OpenGL Terminal'[?2004l
+
+TEST PASSED

@@ -100,21 +100,87 @@ CMakeFiles/OpenGL.dir/src/glad.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/OpenGL.dir/src/glad.c.s"
 	/usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/suyashjain/Documents/GitHub/OpenGL/src/glad.c -o CMakeFiles/OpenGL.dir/src/glad.c.s
 
+CMakeFiles/OpenGL.dir/src/Renderer.cpp.o: CMakeFiles/OpenGL.dir/flags.make
+CMakeFiles/OpenGL.dir/src/Renderer.cpp.o: /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.cpp
+CMakeFiles/OpenGL.dir/src/Renderer.cpp.o: CMakeFiles/OpenGL.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/suyashjain/Documents/GitHub/OpenGL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/OpenGL.dir/src/Renderer.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGL.dir/src/Renderer.cpp.o -MF CMakeFiles/OpenGL.dir/src/Renderer.cpp.o.d -o CMakeFiles/OpenGL.dir/src/Renderer.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.cpp
+
+CMakeFiles/OpenGL.dir/src/Renderer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/OpenGL.dir/src/Renderer.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.cpp > CMakeFiles/OpenGL.dir/src/Renderer.cpp.i
+
+CMakeFiles/OpenGL.dir/src/Renderer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/OpenGL.dir/src/Renderer.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.cpp -o CMakeFiles/OpenGL.dir/src/Renderer.cpp.s
+
+CMakeFiles/OpenGL.dir/src/FontManager.cpp.o: CMakeFiles/OpenGL.dir/flags.make
+CMakeFiles/OpenGL.dir/src/FontManager.cpp.o: /Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.cpp
+CMakeFiles/OpenGL.dir/src/FontManager.cpp.o: CMakeFiles/OpenGL.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/suyashjain/Documents/GitHub/OpenGL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/OpenGL.dir/src/FontManager.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGL.dir/src/FontManager.cpp.o -MF CMakeFiles/OpenGL.dir/src/FontManager.cpp.o.d -o CMakeFiles/OpenGL.dir/src/FontManager.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.cpp
+
+CMakeFiles/OpenGL.dir/src/FontManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/OpenGL.dir/src/FontManager.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.cpp > CMakeFiles/OpenGL.dir/src/FontManager.cpp.i
+
+CMakeFiles/OpenGL.dir/src/FontManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/OpenGL.dir/src/FontManager.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.cpp -o CMakeFiles/OpenGL.dir/src/FontManager.cpp.s
+
+CMakeFiles/OpenGL.dir/src/Terminal.cpp.o: CMakeFiles/OpenGL.dir/flags.make
+CMakeFiles/OpenGL.dir/src/Terminal.cpp.o: /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.cpp
+CMakeFiles/OpenGL.dir/src/Terminal.cpp.o: CMakeFiles/OpenGL.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/suyashjain/Documents/GitHub/OpenGL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/OpenGL.dir/src/Terminal.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGL.dir/src/Terminal.cpp.o -MF CMakeFiles/OpenGL.dir/src/Terminal.cpp.o.d -o CMakeFiles/OpenGL.dir/src/Terminal.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.cpp
+
+CMakeFiles/OpenGL.dir/src/Terminal.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/OpenGL.dir/src/Terminal.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.cpp > CMakeFiles/OpenGL.dir/src/Terminal.cpp.i
+
+CMakeFiles/OpenGL.dir/src/Terminal.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/OpenGL.dir/src/Terminal.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.cpp -o CMakeFiles/OpenGL.dir/src/Terminal.cpp.s
+
+CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o: CMakeFiles/OpenGL.dir/flags.make
+CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o: /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp
+CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o: CMakeFiles/OpenGL.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/suyashjain/Documents/GitHub/OpenGL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o -MF CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o.d -o CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o -c /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp
+
+CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp > CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.i
+
+CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp -o CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.s
+
 # Object files for target OpenGL
 OpenGL_OBJECTS = \
 "CMakeFiles/OpenGL.dir/src/main.cpp.o" \
-"CMakeFiles/OpenGL.dir/src/glad.c.o"
+"CMakeFiles/OpenGL.dir/src/glad.c.o" \
+"CMakeFiles/OpenGL.dir/src/Renderer.cpp.o" \
+"CMakeFiles/OpenGL.dir/src/FontManager.cpp.o" \
+"CMakeFiles/OpenGL.dir/src/Terminal.cpp.o" \
+"CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o"
 
 # External object files for target OpenGL
 OpenGL_EXTERNAL_OBJECTS =
 
 OpenGL: CMakeFiles/OpenGL.dir/src/main.cpp.o
 OpenGL: CMakeFiles/OpenGL.dir/src/glad.c.o
+OpenGL: CMakeFiles/OpenGL.dir/src/Renderer.cpp.o
+OpenGL: CMakeFiles/OpenGL.dir/src/FontManager.cpp.o
+OpenGL: CMakeFiles/OpenGL.dir/src/Terminal.cpp.o
+OpenGL: CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o
 OpenGL: CMakeFiles/OpenGL.dir/build.make
 OpenGL: /opt/homebrew/lib/libglfw.3.4.dylib
 OpenGL: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework
+OpenGL: /opt/homebrew/lib/libfreetype.dylib
+OpenGL: /opt/homebrew/lib/libglm.dylib
 OpenGL: CMakeFiles/OpenGL.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/suyashjain/Documents/GitHub/OpenGL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable OpenGL"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/suyashjain/Documents/GitHub/OpenGL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable OpenGL"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/OpenGL.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

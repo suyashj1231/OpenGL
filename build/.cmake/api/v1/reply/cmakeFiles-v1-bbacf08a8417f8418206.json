@@ -276,6 +276,38 @@
 		{
 			"isExternal" : true,
 			"path" : "/opt/homebrew/lib/cmake/glfw3/glfw3Targets-release.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/homebrew/share/cmake/Modules/FindFreetype.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/homebrew/share/cmake/Modules/SelectLibraryConfigurations.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/homebrew/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/homebrew/share/cmake/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/opt/homebrew/share/glm/glmConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/opt/homebrew/share/glm/glmConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/opt/homebrew/share/glm/glmConfig-release.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",

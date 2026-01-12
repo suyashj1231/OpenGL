@@ -1,5 +1,7 @@
-CMakeFiles/OpenGL.dir/src/main.cpp.o: \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/main.cpp \
+CMakeFiles/OpenGL.dir/src/Renderer.cpp.o: \
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.cpp \
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.h \
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/Shader.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/src/config.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/dependencies/glad/glad.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/dependencies/KHR/khrplatform.h \
@@ -1030,29 +1032,4 @@ CMakeFiles/OpenGL.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tree \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/fcntl.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/fcntl.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_o_sync.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_o_dsync.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_s_ifmt.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_filesec_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/termios.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/termios.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_posix_vdisable.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/ttycom.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/ioccom.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/ttydefaults.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/unistd.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/select.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_select.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_uuid_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/gethostuuid.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/util.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/pwd.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/uuid/uuid.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/utmp.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/Shader.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.h
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.h

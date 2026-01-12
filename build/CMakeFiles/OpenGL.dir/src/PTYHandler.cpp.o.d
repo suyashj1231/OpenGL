@@ -1,5 +1,6 @@
-CMakeFiles/OpenGL.dir/src/main.cpp.o: \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/main.cpp \
+CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o: \
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.cpp \
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/src/config.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/dependencies/glad/glad.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/dependencies/KHR/khrplatform.h \
@@ -1030,8 +1031,6 @@ CMakeFiles/OpenGL.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tree \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/FontManager.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/PTYHandler.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/fcntl.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/fcntl.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_o_sync.h \
@@ -1053,6 +1052,20 @@ CMakeFiles/OpenGL.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/pwd.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/uuid/uuid.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/utmp.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/Shader.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.h
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/signal.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/ioctl.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/filio.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/sockio.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/net/if.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/net/if_var.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/time.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval64.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval32.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/net/net_kev.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/socket.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/constrained_ctypes.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/_param.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_param.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_sa_family_t.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_socklen_t.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_iovec_t.h

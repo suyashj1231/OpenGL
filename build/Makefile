@@ -129,6 +129,102 @@ OpenGL/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/build
 .PHONY : OpenGL/fast
 
+src/FontManager.o: src/FontManager.cpp.o
+.PHONY : src/FontManager.o
+
+# target to build an object file
+src/FontManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/FontManager.cpp.o
+.PHONY : src/FontManager.cpp.o
+
+src/FontManager.i: src/FontManager.cpp.i
+.PHONY : src/FontManager.i
+
+# target to preprocess a source file
+src/FontManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/FontManager.cpp.i
+.PHONY : src/FontManager.cpp.i
+
+src/FontManager.s: src/FontManager.cpp.s
+.PHONY : src/FontManager.s
+
+# target to generate assembly for a file
+src/FontManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/FontManager.cpp.s
+.PHONY : src/FontManager.cpp.s
+
+src/PTYHandler.o: src/PTYHandler.cpp.o
+.PHONY : src/PTYHandler.o
+
+# target to build an object file
+src/PTYHandler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.o
+.PHONY : src/PTYHandler.cpp.o
+
+src/PTYHandler.i: src/PTYHandler.cpp.i
+.PHONY : src/PTYHandler.i
+
+# target to preprocess a source file
+src/PTYHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.i
+.PHONY : src/PTYHandler.cpp.i
+
+src/PTYHandler.s: src/PTYHandler.cpp.s
+.PHONY : src/PTYHandler.s
+
+# target to generate assembly for a file
+src/PTYHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/PTYHandler.cpp.s
+.PHONY : src/PTYHandler.cpp.s
+
+src/Renderer.o: src/Renderer.cpp.o
+.PHONY : src/Renderer.o
+
+# target to build an object file
+src/Renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Renderer.cpp.o
+.PHONY : src/Renderer.cpp.o
+
+src/Renderer.i: src/Renderer.cpp.i
+.PHONY : src/Renderer.i
+
+# target to preprocess a source file
+src/Renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Renderer.cpp.i
+.PHONY : src/Renderer.cpp.i
+
+src/Renderer.s: src/Renderer.cpp.s
+.PHONY : src/Renderer.s
+
+# target to generate assembly for a file
+src/Renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Renderer.cpp.s
+.PHONY : src/Renderer.cpp.s
+
+src/Terminal.o: src/Terminal.cpp.o
+.PHONY : src/Terminal.o
+
+# target to build an object file
+src/Terminal.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Terminal.cpp.o
+.PHONY : src/Terminal.cpp.o
+
+src/Terminal.i: src/Terminal.cpp.i
+.PHONY : src/Terminal.i
+
+# target to preprocess a source file
+src/Terminal.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Terminal.cpp.i
+.PHONY : src/Terminal.cpp.i
+
+src/Terminal.s: src/Terminal.cpp.s
+.PHONY : src/Terminal.s
+
+# target to generate assembly for a file
+src/Terminal.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGL.dir/build.make CMakeFiles/OpenGL.dir/src/Terminal.cpp.s
+.PHONY : src/Terminal.cpp.s
+
 src/glad.o: src/glad.c.o
 .PHONY : src/glad.o
 
@@ -186,6 +282,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... OpenGL"
+	@echo "... src/FontManager.o"
+	@echo "... src/FontManager.i"
+	@echo "... src/FontManager.s"
+	@echo "... src/PTYHandler.o"
+	@echo "... src/PTYHandler.i"
+	@echo "... src/PTYHandler.s"
+	@echo "... src/Renderer.o"
+	@echo "... src/Renderer.i"
+	@echo "... src/Renderer.s"
+	@echo "... src/Terminal.o"
+	@echo "... src/Terminal.i"
+	@echo "... src/Terminal.s"
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"

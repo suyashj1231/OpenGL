@@ -1,5 +1,6 @@
-CMakeFiles/OpenGL.dir/src/main.cpp.o: \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/main.cpp \
+CMakeFiles/OpenGL.dir/src/Terminal.cpp.o: \
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.cpp \
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/src/config.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/dependencies/glad/glad.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/dependencies/KHR/khrplatform.h \
@@ -1054,5 +1055,4 @@ CMakeFiles/OpenGL.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/uuid/uuid.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/utmp.h \
   /Users/suyashjain/Documents/GitHub/OpenGL/src/Renderer.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/Shader.h \
-  /Users/suyashjain/Documents/GitHub/OpenGL/src/Terminal.h
+  /Users/suyashjain/Documents/GitHub/OpenGL/src/Shader.h
