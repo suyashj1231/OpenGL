@@ -1,4 +1,4 @@
-# ⚡️ TerminalGL: The High-Performance GPU Terminal
+#  TerminalGL: The High-Performance GPU Terminal
 
 > **"Why render text when you can accelerate it?"**
 
@@ -10,19 +10,19 @@ Powered by a custom **Batch Rendering Engine** and **Dynamic Texture Atlasing**,
 
 ---
 
-## 🚀 Features
+##  Features
 
-### 🎮 **GPU-Accelerated Core**
+###  **GPU-Accelerated Core**
 - **Batch Rendering**: Draws the entire screen in < 5 draw calls.
 - **Texture Atlas**: Dynamic font packing on a 1024x1024 GPU texture.
 - **Zero Latency**: Input processing happens at the speed of light (or roughly 16ms).
 
-### 🎨 **Visuals & Aesthetics**
+###  **Visuals & Aesthetics**
 - **Animated GIF Backgrounds**: Support for dynamic, looping backgrounds (via `stb_image`).
 - **Retro-Modern Look**: Gold text on Cyan cursors.
 - **Uncapped FPS**: Push your GPU to the limit (Toggle VSync with `F3`).
 
-### 🛠 **Power User Tools**
+###  **Power User Tools**
 - **Shell Integration**: Seamless Zsh/Bash PTY spawning.
 - **Smart Zooming**: `Cmd +` / `Cmd -` to scale text instantly.
 - **Clipboard Sync**: `Cmd+C` / `Cmd+V` native system integration.
@@ -43,7 +43,7 @@ Powered by a custom **Batch Rendering Engine** and **Dynamic Texture Atlasing**,
 
 ---
 
-## 🛠 Building from Source
+##  Building from Source
 
 ### Dependencies
 - **CMake**
@@ -66,7 +66,7 @@ make
 
 ---
 
-## 🧠 Technical Deep Dive
+##  Technical Deep Dive
 
 ### The Rendering Pipeline
 Most terminals render text as individual bitmaps. TerminalGL approaches text like a game engine:
@@ -82,11 +82,11 @@ Most terminals render text as individual bitmaps. TerminalGL approaches text lik
 
 ---
 
-## 🔮 Future Roadmap
+##  Future Roadmap
 - [ ] Shader Effects (Bloom, CRT Scanlines)
 - [ ] Ligature Support
 - [ ] Configuration File (`json`/`toml`)
 
 ---
 
-*Crafted with 💻 + ☕ by standard C++17 and OpenGL 3.3.*
+* standard C++17 and OpenGL 3.3.*
