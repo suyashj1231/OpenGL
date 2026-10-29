@@ -31,11 +31,17 @@ Measured with VSync off (`F3`):
                        into one 1024×1024 GL_RED atlas texture
 ```
 
-**One texture for every glyph.** The naive approach gives each character its own texture, which forces a texture bind and a draw call per character. `FontManager` instead rasterizes glyphs with FreeType the first time they're needed and packs them row by row into a single 1024×1024 single-channel atlas, recording each glyph's UV rectangle. Every character on screen therefore samples the same texture.
+### One texture for every glyph
 
-**Batch until the state changes.** `Renderer` appends six vertices (position + UV) per glyph to a CPU-side buffer sized for 10,000 quads. Since the texture never changes, the only thing that forces a flush is a change of text color, a shader uniform. A screen of plain output is one `glBufferSubData` plus one `glDrawArrays`, and colored output costs one call per color run instead of one per character. The fragment shader reads the atlas's red channel as alpha and tints it.
+The naive approach gives each character its own texture, which forces a texture bind and a draw call per character. `FontManager` instead rasterizes glyphs with FreeType the first time they're needed and packs them row by row into a single 1024×1024 single-channel atlas, recording each glyph's UV rectangle. Every character on screen therefore samples the same texture.
 
-**A real terminal underneath.** `PTYHandler` spawns your `$SHELL` (with `TERM=xterm-256color`) using `forkpty()`, reads the master side non-blocking every frame, and forwards window resizes with `TIOCSWINSZ` so full-screen programs reflow. `Terminal` decodes UTF-8 incrementally (multi-byte sequences can split across reads) and runs a small state machine for escape sequences: cursor movement (`A`-`D`, `H`/`f`), SGR colors (`m`), and erase in display/line (`J`, `K`).
+### Batch until the state changes
+
+`Renderer` appends six vertices (position + UV) per glyph to a CPU-side buffer sized for 10,000 quads. Since the texture never changes, the only thing that forces a flush is a change of text color, a shader uniform. A screen of plain output is one `glBufferSubData` plus one `glDrawArrays`, and colored output costs one call per color run instead of one per character. The fragment shader reads the atlas's red channel as alpha and tints it.
+
+### A real terminal underneath
+
+`PTYHandler` spawns your `$SHELL` (with `TERM=xterm-256color`) using `forkpty()`, reads the master side non-blocking every frame, and forwards window resizes with `TIOCSWINSZ` so full-screen programs reflow. `Terminal` decodes UTF-8 incrementally (multi-byte sequences can split across reads) and runs a small state machine for escape sequences: cursor movement (`A`-`D`, `H`/`f`), SGR colors (`m`), and erase in display/line (`J`, `K`).
 
 ## Features
 
